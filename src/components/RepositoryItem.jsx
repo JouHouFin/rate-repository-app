@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import Text from './Text';
+import theme from '../theme';
 
 const styles = StyleSheet.create({
   image: {
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     padding: 5,
-    flexShrink: 3
+    backgroundColor: 'white',
   },
   rowContainer: {
     display: 'flex',
@@ -35,51 +36,64 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   language: {
-    backgroundColor: 'darkblue',
+    backgroundColor: theme.colors.primary,
     color: 'white',
     padding: 5,
     borderRadius: 5,
-    display:'flex'
+    alignSelf: 'flex-start',
+    marginTop: 5
   }
 });
+
+const RepositoryItemGeneralInfo = ({ item }) => {
+  return (
+    <View style={styles.rowContainer}>
+      <Image style={styles.image} source={{ uri: item.ownerAvatarUrl }} />
+      <View style={styles.columnContainer}>
+        <Text fontWeight="bold">{item.fullName}</Text>
+        <Text style={{ marginTop: 5 }} >{item.description}</Text>
+        <Text style={styles.language}>{item.language}</Text>
+      </View>
+    </View>
+  );
+};
+
+const RepositoryItemNumbers = ({ item }) => {
+  return (
+    <View style={styles.detailsRowContainer}>
+      <View style={styles.rowItem}>
+        <Text fontWeight="bold">
+          {Math.round(item.stargazersCount/1000*10)/10}k
+        </Text>
+        <Text>Stars</Text>
+      </View>
+      <View style={styles.rowItem}>
+        <Text fontWeight="bold">
+          {Math.round(item.forksCount/1000*10)/10}k
+        </Text>
+        <Text>Forks</Text>
+      </View>
+      <View style={styles.rowItem}>
+        <Text fontWeight="bold">
+          {item.reviewCount}
+        </Text>
+        <Text>Reviews</Text>
+      </View>
+      <View style={styles.rowItem}>
+        <Text fontWeight="bold">
+          {item.ratingAverage}
+        </Text>
+        <Text>Rating</Text>
+      </View>
+    </View>
+  );
+};
 
 const RepositoryItem = ({ item }) => {
   return (
     <View style={styles.columnContainer}>
-      <View style={styles.rowContainer}>
-        <Image style={styles.image} source={{ uri: item.ownerAvatarUrl }} />
-        <View style={styles.columnContainer}>
-          <Text fontSize="subheading" fontWeight="bold">{item.fullName}</Text>
-          <Text>{item.description}</Text>
-          <Text style={styles.language}>{item.language}</Text>
-        </View>
-      </View>
-      <View style={styles.detailsRowContainer}>
-        <View style={styles.rowItem}>
-          <Text fontWeight="bold">
-            {Math.round(item.stargazersCount/1000*10)/10}k
-          </Text>
-          <Text>Stars</Text>
-        </View>
-        <View style={styles.rowItem}>
-          <Text fontWeight="bold">
-            {Math.round(item.forksCount/1000*10)/10}k
-          </Text>
-          <Text>Forks</Text>
-        </View>
-        <View style={styles.rowItem}>
-          <Text fontWeight="bold">
-            {item.reviewCount}
-          </Text>
-          <Text>Reviews</Text>
-        </View>
-        <View style={styles.rowItem}>
-          <Text fontWeight="bold">
-            {item.ratingAverage}
-          </Text>
-          <Text>Rating</Text>
-        </View>
-      </View>
+      <RepositoryItemGeneralInfo item={item} />
+      <RepositoryItemNumbers item={item} />
     </View>
   );
 };
