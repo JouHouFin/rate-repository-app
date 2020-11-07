@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 
 import Text from './Text';
@@ -21,12 +22,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const AppBarTab = ({ text }) => {
+const AppBarTab = ({ text, linkTo }) => {
   return (
     <View style={styles.tab}>
-      <TouchableWithoutFeedback>
+      <Link to={linkTo} component={TouchableOpacity} activeOpacity={0.5}>
         <Text style={styles.title}>{text}</Text>
-      </TouchableWithoutFeedback>
+      </Link>
     </View>
   );
 };
@@ -34,7 +35,8 @@ const AppBarTab = ({ text }) => {
 const AppBar = () => {
   return (
     <View style={styles.container}>
-      <AppBarTab text='Repositories' />
+      <AppBarTab text='Repositories' linkTo='/'/>
+      <AppBarTab text='Sign in' linkTo='/SignIn'/>
     </View>
   );
 };
