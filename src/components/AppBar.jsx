@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 
@@ -19,6 +19,10 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.appBarText,
+  },
+  scroll: {
+    display: 'flex',
+    flexDirection: 'row'
   }
 });
 
@@ -35,8 +39,10 @@ const AppBarTab = ({ text, linkTo }) => {
 const AppBar = () => {
   return (
     <View style={styles.container}>
-      <AppBarTab text='Repositories' linkTo='/'/>
-      <AppBarTab text='Sign in' linkTo='/SignIn'/>
+      <ScrollView horizontal style={styles.scroll}>
+        <AppBarTab text='Repositories' linkTo='/'/>
+        <AppBarTab text='Sign in' linkTo='/SignIn'/>
+      </ScrollView>
     </View>
   );
 };
