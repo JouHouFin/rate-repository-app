@@ -5,6 +5,7 @@ import FormikTextInput from './FormikTextInput';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import useSignIn from '../hooks/useSignIn';
+import AuthStorage from '../utils/authStorage';
 
 const initialValues = { username: '', password: '' };
 
@@ -65,25 +66,20 @@ const SignInForm = ({ onSubmit, errorMsg }) => {
 
 const SignIn = () => {
   const [signIn] = useSignIn();
-  const [errorMsg, setErrorMsg] = useState(null);
 
   const onSubmit = async (values) => {
     const { username, password } = values;
 
     try {
-      const { data } = await signIn({ username, password });
-      console.log('data', data);
-      setErrorMsg(null);
+      signIn({ username, password });
     } catch (e) {
-      console.log('E', e.message);
-      const emsg = 'GraphQL error: Invalid username or password';
-      if (e.message === emsg) setErrorMsg('Invalid username or password');
+      console.log('e', e);
     }
   };
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} errorMsg={errorMsg} />}
+      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
     </Formik>
 
   );
