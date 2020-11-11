@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import Text from './Text';
 import FormikTextInput from './FormikTextInput';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import useSignIn from '../hooks/useSignIn';
 
 const initialValues = { username: '', password: '' };
 
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const SignInForm = ({ onSubmit }) => {
+const SignInForm = ({ onSubmit, errorMsg }) => {
   return (
     <View style={styles.container}>
       <FormikTextInput name="username" placeholder="Username" style={styles.input}/>
@@ -57,19 +58,34 @@ const SignInForm = ({ onSubmit }) => {
       <TouchableWithoutFeedback onPress={onSubmit} >
         <Text style={styles.button}>Sign in</Text>
       </TouchableWithoutFeedback>
+      <Text style={styles.invalid}>{errorMsg ? errorMsg : null}</Text>
     </View>
   );
 };
 
 const SignIn = () => {
-  const onSubmit = values => {
-    console.log(values.username, values.password);
+  const [signIn] = useSignIn();
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+
+    try {
+      const { data } = await signIn({ username, password });
+      console.log('data', data);
+      setErrorMsg(null);
+    } catch (e) {
+      console.log('E', e.message);
+      const emsg = 'GraphQL error: Invalid username or password';
+      if (e.message === emsg) setErrorMsg('Invalid username or password');
+    }
   };
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} errorMsg={errorMsg} />}
     </Formik>
+
   );
 };
 
