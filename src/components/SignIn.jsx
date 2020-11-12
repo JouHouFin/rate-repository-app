@@ -5,7 +5,6 @@ import FormikTextInput from './FormikTextInput';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import useSignIn from '../hooks/useSignIn';
-import AuthStorage from '../utils/authStorage';
 
 const initialValues = { username: '', password: '' };
 
@@ -59,27 +58,29 @@ const SignInForm = ({ onSubmit, errorMsg }) => {
       <TouchableWithoutFeedback onPress={onSubmit} >
         <Text style={styles.button}>Sign in</Text>
       </TouchableWithoutFeedback>
-      <Text style={styles.invalid}>{errorMsg ? errorMsg : null}</Text>
+      <Text>{errorMsg}</Text>
     </View>
   );
 };
 
 const SignIn = () => {
   const [signIn] = useSignIn();
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const onSubmit = async (values) => {
     const { username, password } = values;
 
     try {
-      signIn({ username, password });
+      await signIn({ username, password });
+      setErrorMsg(null);
     } catch (e) {
-      console.log('e', e);
+      setErrorMsg(e.message.slice(15));
     }
   };
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} errorMsg={errorMsg}/>}
     </Formik>
 
   );

@@ -29,3 +29,12 @@ export const GET_REPOSITORIES = gql`
     }
   }
 `;
+
+export const CHECK_AUTHORIZATION = gql`
+  query {
+    authorizedUser {
+      id
+      username
+    }
+  }
+`;

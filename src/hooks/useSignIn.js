@@ -15,13 +15,12 @@ const useSignIn = () => {
     // call the mutate function here with the right arguments
     try {
       const { data } = await mutate({ variables: { username, password } });
-      console.log(data);
       await authStorage.setAccessToken(data.authorize.accessToken);
       apolloClient.resetStore();
       history.push('/');
     } catch (e) {
-      console.log('e');
-      return e;
+      console.log('E', e);
+      throw e;
     }
   };
 
