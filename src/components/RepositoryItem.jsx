@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, TimePickerAndroid } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
+import { toKilos } from '../utils/misc';
 
 const styles = StyleSheet.create({
   image: {
@@ -50,9 +51,9 @@ const RepositoryItemGeneralInfo = ({ item }) => {
     <View style={styles.rowContainer}>
       <Image style={styles.image} source={{ uri: item.ownerAvatarUrl }} />
       <View style={styles.columnContainer}>
-        <Text fontWeight="bold">{item.fullName}</Text>
-        <Text style={{ marginTop: 5 }} >{item.description}</Text>
-        <Text style={styles.language}>{item.language}</Text>
+        <Text fontWeight="bold" testID="fullName">{item.fullName}</Text>
+        <Text style={{ marginTop: 5 }} testID="description">{item.description}</Text>
+        <Text style={styles.language} testID="language">{item.language}</Text>
       </View>
     </View>
   );
@@ -62,25 +63,25 @@ const RepositoryItemNumbers = ({ item }) => {
   return (
     <View style={styles.detailsRowContainer}>
       <View style={styles.rowItem}>
-        <Text fontWeight="bold">
-          {Math.round(item.stargazersCount/1000*10)/10}k
+        <Text fontWeight="bold" testID="stargazersCount">
+          {toKilos(item.stargazersCount)}k
         </Text>
         <Text>Stars</Text>
       </View>
       <View style={styles.rowItem}>
-        <Text fontWeight="bold">
-          {Math.round(item.forksCount/1000*10)/10}k
+        <Text fontWeight="bold" testID="forksCount">
+          {toKilos(item.forksCount)}k
         </Text>
         <Text>Forks</Text>
       </View>
       <View style={styles.rowItem}>
-        <Text fontWeight="bold">
+        <Text fontWeight="bold" testID="reviewCount">
           {item.reviewCount}
         </Text>
         <Text>Reviews</Text>
       </View>
       <View style={styles.rowItem}>
-        <Text fontWeight="bold">
+        <Text fontWeight="bold" testID="ratingAverage">
           {item.ratingAverage}
         </Text>
         <Text>Rating</Text>
@@ -91,9 +92,9 @@ const RepositoryItemNumbers = ({ item }) => {
 
 const RepositoryItem = ({ item }) => {
   return (
-    <View style={styles.columnContainer}>
-      <RepositoryItemGeneralInfo item={item} />
-      <RepositoryItemNumbers item={item} />
+    <View style={styles.columnContainer} testID="RepositoryItem">
+      <RepositoryItemGeneralInfo item={item} testID="GeneralInfo"/>
+      <RepositoryItemNumbers item={item} testID="Numbers"/>
     </View>
   );
 };
