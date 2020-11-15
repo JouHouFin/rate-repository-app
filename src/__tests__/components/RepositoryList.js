@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import { RepositoryListContainer } from '../../components/RepositoryList';
-import '@testing-library/jest-native/extend-expect';
 import { toKilos } from '../../utils/misc';
+import '@testing-library/jest-native/extend-expect';
 
 describe('RepositoryList', () => {
   describe('RepositoryListContainer', () => {

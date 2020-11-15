@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import Text from './Text';
 import FormikTextInput from './FormikTextInput';
@@ -50,40 +50,42 @@ const styles = StyleSheet.create({
   }
 });
 
-const SignInForm = ({ onSubmit, errorMsg }) => {
+const SignInForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
-      <FormikTextInput name="username" placeholder="Username" style={styles.input}/>
-      <FormikTextInput name="password" placeholder="Password" style={styles.input} secureTextEntry/>
-      <TouchableWithoutFeedback onPress={onSubmit} >
+      <FormikTextInput name="username" testID="username" placeholder="Username" style={styles.input}/>
+      <FormikTextInput name="password" testID="password" placeholder="Password" style={styles.input} secureTextEntry/>
+      <TouchableWithoutFeedback onPress={onSubmit} testID="submitBtn">
         <Text style={styles.button}>Sign in</Text>
       </TouchableWithoutFeedback>
-      <Text>{errorMsg}</Text>
     </View>
   );
 };
 
 const SignIn = () => {
   const [signIn] = useSignIn();
-  const [errorMsg, setErrorMsg] = useState(null);
 
   const onSubmit = async (values) => {
     const { username, password } = values;
 
     try {
       await signIn({ username, password });
-      setErrorMsg(null);
     } catch (e) {
-      setErrorMsg(e.message.slice(15));
+      console.log(e);
     }
   };
 
+  return <SignInContainer onSubmit={onSubmit}/>;
+
+};
+
+export const SignInContainer = ({ onSubmit }) => {
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} errorMsg={errorMsg}/>}
+      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit}/>}
     </Formik>
-
   );
 };
+
 
 export default SignIn;
