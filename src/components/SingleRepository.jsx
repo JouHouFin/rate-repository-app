@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'white'
   },
-  upperContainer: {
+  reviewDetailsContainer: {
     display: 'flex',
     flexDirection: 'row',
     textAlign: 'center',
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   usernameAndDate: {
     textAlignVertical: 'center',
   },
-  lowerContainer: {
+  reviewTextContainer: {
     marginLeft: 50,
   },
   points: {
@@ -57,14 +57,14 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const ReviewItem = ({ review }) => {
   return (
     <View style={styles.mainReviewContainer}>
-      <View style={styles.upperContainer}>
+      <View style={styles.reviewDetailsContainer}>
         <Text style={styles.points} fontWeight="bold">{review.rating}</Text>
         <Text style={styles.usernameAndDate}>
           <Text fontWeight="bold">{review.user.username}{'\n'}</Text>
           <Text style={{ color: 'grey' }}>{format(parseISO(review.createdAt), 'dd.MM.yyyy')}</Text>
         </Text>
       </View>
-      <View style={styles.lowerContainer}>
+      <View style={styles.reviewTextContainer}>
         <Text>{review.text}</Text>
       </View>
     </View>

@@ -7,6 +7,7 @@ import AppBar from './AppBar';
 import SignIn from './SignIn';
 import theme from '../theme';
 import SingleRepository from './SingleRepository';
+import CreateReview from './CreateReview';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,6 +31,9 @@ const Main = () => {
         </Route>
         <Route path="/SignIn">
           <SignIn onSubmit={onSubmit} />
+        </Route>
+        <Route path="/createReview">
+          <CreateReview />
         </Route>
         <Route path="/:id">
           <SingleRepository />
