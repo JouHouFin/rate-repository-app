@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const styles = StyleSheet.create({
   separator: {
@@ -27,7 +27,7 @@ export const RepositoryListContainer = ({ repositories, loading, handlePress }) 
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => handlePress(item)}>
-          <RepositoryItem item={item}/>
+          <RepositoryItem item={item} viewSingle={false}/>
         </TouchableOpacity>
       )}
     />

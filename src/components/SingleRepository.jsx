@@ -1,23 +1,18 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import { useParams } from 'react-router-native';
+
+import Text from './Text';
 import useRepository from '../hooks/useRepository';
 
 const SingleRepository = () => {
-  //const { id } = useParams();
-  console.log('here');
+  const { id } = useParams();
+  const { repository, loading } = useRepository(id);
 
-  //const item = useRepository(id);
-  //console.log('item', item);
+  if (loading) return <Text>Loading</Text>;
 
   return (
-    //<RepositoryItem item={item} viewSingle={true} />
-    <View>
-      <Text>
-        {'here'}
-      </Text>
-    </View>
+    <RepositoryItem item={repository} viewSingle={true} />
   );
 };
 

@@ -3,12 +3,14 @@ import { View, Image, StyleSheet } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
 import { toKilos } from '../utils/misc';
+import * as Linking from 'expo-linking';
 
 const styles = StyleSheet.create({
-  image: {
+  tinyAvatar: {
     height: 50,
     width: 50,
     borderRadius: 5,
+    marginRight: 5
   },
   columnContainer: {
     display: 'flex',
@@ -43,13 +45,22 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignSelf: 'flex-start',
     marginTop: 5
+  },
+  link: {
+    backgroundColor: theme.colors.primary,
+    color: 'white',
+    padding: 15,
+    borderRadius: 5,
+    margin: 5,
+    flexGrow: 1,
+    textAlign: 'center'
   }
 });
 
 const RepositoryItemGeneralInfo = ({ item }) => {
   return (
     <View style={styles.rowContainer}>
-      <Image style={styles.image} source={{ uri: item.ownerAvatarUrl }} />
+      <Image style={styles.tinyAvatar} source={{ uri: item.ownerAvatarUrl }} />
       <View style={styles.columnContainer}>
         <Text fontWeight="bold" testID="fullName">{item.fullName}</Text>
         <Text style={{ marginTop: 5 }} testID="description">{item.description}</Text>
@@ -91,12 +102,15 @@ const RepositoryItemNumbers = ({ item }) => {
 };
 
 const RepositoryItem = ({ item, viewSingle }) => {
+  const handleLinkPressed = (url) => {
+    Linking.openURL(url);
+  };
 
   return (
     <View style={styles.columnContainer} testID="RepositoryItem">
       <RepositoryItemGeneralInfo item={item} testID="GeneralInfo"/>
       <RepositoryItemNumbers item={item} testID="Numbers"/>
-      {viewSingle ? <Text>{item.url}</Text> : null }
+      {viewSingle ? <Text style={styles.link} onPress={() => handleLinkPressed(item.url)}>Open in GitHub</Text> : null }
     </View>
   );
 };
