@@ -1,7 +1,8 @@
 import React from 'react';
-import { FlatList, View, StyleSheet, Text } from 'react-native';
+import { FlatList, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
+import { useHistory, useParams } from 'react-router-dom';
 
 const styles = StyleSheet.create({
   separator: {
@@ -11,11 +12,12 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories, loading }) => {
+export const RepositoryListContainer = ({ repositories, loading, handlePress }) => {
   // Get the nodes from the edges array
   const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
     : [];
+
 
   if (loading) return <Text>Loading</Text>;
 
@@ -24,7 +26,9 @@ export const RepositoryListContainer = ({ repositories, loading }) => {
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
-        <RepositoryItem item={item}/>
+        <TouchableOpacity onPress={() => handlePress(item)}>
+          <RepositoryItem item={item}/>
+        </TouchableOpacity>
       )}
     />
   );
@@ -32,8 +36,12 @@ export const RepositoryListContainer = ({ repositories, loading }) => {
 
 const RepositoryList = () => {
   const { repositories, loading } = useRepositories();
+  const history = useHistory();
+  const handlePress = (item) => {
+    history.push(`/${item.id}`);
+  };
 
-  return <RepositoryListContainer repositories={repositories} loading={loading} />;
+  return <RepositoryListContainer repositories={repositories} loading={loading} handlePress={handlePress} />;
 
 };
 

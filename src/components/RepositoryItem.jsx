@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, TimePickerAndroid } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
 import { toKilos } from '../utils/misc';
@@ -90,11 +90,13 @@ const RepositoryItemNumbers = ({ item }) => {
   );
 };
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, viewSingle }) => {
+
   return (
     <View style={styles.columnContainer} testID="RepositoryItem">
       <RepositoryItemGeneralInfo item={item} testID="GeneralInfo"/>
       <RepositoryItemNumbers item={item} testID="Numbers"/>
+      {viewSingle ? <Text>{item.url}</Text> : null }
     </View>
   );
 };
