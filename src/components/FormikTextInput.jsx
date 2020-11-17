@@ -17,6 +17,11 @@ const FormikTextInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
   const showError = meta.touched && meta.error;
 
+  let value = field.value;
+  if (!isNaN(value)) {
+    value = String(field.value);
+  }
+
   return (
     <>
       <TextInput

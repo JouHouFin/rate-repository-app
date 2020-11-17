@@ -2,12 +2,11 @@ import { gql } from 'apollo-boost';
 import { REPO_FRAGMENT } from './fragments';
 
 export const GET_REPOSITORIES = gql`
-  query {
-    repositories {
+  query ($orderBy: AllRepositoriesOrderBy!, $orderDirection: OrderDirection!) {
+    repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
       edges {
         node {
           ...RepoFields
-          ownerAvatarUrl
         }
         cursor
       }

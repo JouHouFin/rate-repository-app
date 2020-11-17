@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import useCreateReview from '../hooks/useCreateReview';
 
-const initialValues = { ownerName: '', repositoryName: '', rating: 0, review: '' };
+const initialValues = { ownerName: '', repositoryName: '', rating: '', review: '' };
 
 import theme from '../theme';
 
@@ -60,7 +60,7 @@ const CreateReviewForm = ({ onSubmit }) => {
     <View style={styles.container}>
       <FormikTextInput name="ownerName" testID="ownerName" placeholder="Repository owner" style={styles.input}/>
       <FormikTextInput name="repositoryName" testID="repositoryName" placeholder="Repository name" style={styles.input} />
-      <FormikTextInput name="rating" testID="rating" placeholder="Rating (between 0 and 100)" style={styles.input} />
+      <FormikTextInput name="rating" keyboardType={'numeric'} testID="rating" placeholder="Rating (between 0 and 100)" style={styles.input} />
       <FormikTextInput name="text" testID="text" placeholder="Review" style={[styles.input, { height: 100 }]} multiline={true} />
       <TouchableWithoutFeedback onPress={onSubmit} testID="submitBtn">
         <Text style={styles.button}>Create a review</Text>
