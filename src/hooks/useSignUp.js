@@ -7,10 +7,9 @@ const usesignUp = () => {
   const signUp = async ({ username, password }) => {
     // call the mutate function here with the right arguments
     try {
-      const { data } = await mutate({ variables: { username, password } });
-      console.log(data);
+      await mutate({ variables: { username, password } });
     } catch (e) {
-      console.log('E', e);
+      console.log('e3', e);
       throw e;
     }
   };

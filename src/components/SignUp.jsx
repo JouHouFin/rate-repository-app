@@ -85,7 +85,6 @@ const SignUp = () => {
     try {
       await signUp({ username, password });
       await signIn({ username, password });
-
     } catch (e) {
       console.log(e);
     }
