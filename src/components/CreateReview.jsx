@@ -4,22 +4,26 @@ import Text from './Text';
 import FormikTextInput from './FormikTextInput';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import useCreateReview from '../hooks/useCreateReview';
 
-const initialValues = { repositoryOwner: '', repositoryName: '', rating: '', review: '' };
+const initialValues = { ownerName: '', repositoryName: '', rating: 0, review: '' };
 
 import theme from '../theme';
 
 const validationSchema = yup.object().shape({
-  repositoryOwner: yup
+  ownerName: yup
     .string()
     .required('Repository owner name is required'),
   repositoryName: yup
     .string()
-    .min(5, 'Password must be at least five characters')
     .required('Repository name is required'),
   rating: yup
     .number()
+    .min(0, 'Rating must be between 0 and 100')
+    .max(100, 'Rating must be between 0 and 100')
     .required('Rating is required'),
+  text: yup
+    .string()
 });
 
 const styles = StyleSheet.create({
@@ -54,10 +58,10 @@ const styles = StyleSheet.create({
 const CreateReviewForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
-      <FormikTextInput name="repositoryOwner" testID="repositoryOwner" placeholder="repositoryOwner" style={styles.input}/>
-      <FormikTextInput name="repositoryName" testID="repositoryName" placeholder="repositoryName" style={styles.input} />
-      <FormikTextInput name="rating" testID="rating" placeholder="rating" style={styles.input} />
-      <FormikTextInput name="review" testID="review" placeholder="review" style={styles.input} />
+      <FormikTextInput name="ownerName" testID="ownerName" placeholder="Repository owner" style={styles.input}/>
+      <FormikTextInput name="repositoryName" testID="repositoryName" placeholder="Repository name" style={styles.input} />
+      <FormikTextInput name="rating" testID="rating" placeholder="Rating (between 0 and 100)" style={styles.input} />
+      <FormikTextInput name="text" testID="text" placeholder="Review" style={[styles.input, { height: 100 }]} multiline={true} />
       <TouchableWithoutFeedback onPress={onSubmit} testID="submitBtn">
         <Text style={styles.button}>Create a review</Text>
       </TouchableWithoutFeedback>
@@ -66,11 +70,13 @@ const CreateReviewForm = ({ onSubmit }) => {
 };
 
 const CreateReview = () => {
+  const [createReview] = useCreateReview();
+
   const onSubmit = async (values) => {
-    const { repositoryOwner, repositoryName, rating, review } = values;
+    const { ownerName, repositoryName, rating, text } = values;
 
     try {
-      console.log(repositoryOwner, repositoryName, rating, review);
+      createReview({ ownerName, repositoryName, rating, text });
     } catch (e) {
       console.log(e);
     }

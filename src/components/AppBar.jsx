@@ -77,7 +77,7 @@ const AppBar = () => {
             <AppBarTab text='Create a review' linkTo='/createReview'/>
           </>
           :
-          <AppBarTab text='Sign in' linkTo='/SignIn'/>
+          null
         }
         {authorizedUser ?
           <>
