@@ -3,6 +3,8 @@ import RepositoryItem from './RepositoryItem';
 import { useParams } from 'react-router-native';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { format, parseISO } from 'date-fns';
+import { useHistory } from 'react-router-dom';
+import { useBackHandler } from '@react-native-community/hooks';
 
 import Text from './Text';
 import useRepository from '../hooks/useRepository';
@@ -92,6 +94,14 @@ const SingleRepositoryContainer = ({ repository, loading }) => {
 const SingleRepository = () => {
   const { id } = useParams();
   const { repository, loading } = useRepository(id);
+  const history = useHistory();
+
+  const onBackPress = () => {
+    history.push('/');
+    return true;
+  };
+
+  useBackHandler(onBackPress);
 
   return <SingleRepositoryContainer repository={repository} loading={loading}/>;
 };

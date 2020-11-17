@@ -51,6 +51,7 @@ describe('RepositoryList', () => {
       };
 
       // Add your test code here
+      // eslint-disable-next-line no-unused-vars
       const { debug, getAllByTestId } = render(<RepositoryListContainer repositories={repositories} loading={false} />);
 
       expect(getAllByTestId('fullName')[0]).toHaveTextContent(repositories.edges[0].node.fullName);

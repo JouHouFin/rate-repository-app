@@ -21,7 +21,11 @@ const onSubmit = (values) => {
   console.log(values);
 };
 
+
+
 const Main = () => {
+
+
   return (
     <View style={styles.container}>
       <AppBar />
@@ -35,7 +39,7 @@ const Main = () => {
         <Route path="/createReview">
           <CreateReview />
         </Route>
-        <Route path="/:id">
+        <Route path="/repository/:id">
           <SingleRepository />
         </Route>
         <Redirect to="/" />

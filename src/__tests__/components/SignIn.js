@@ -7,6 +7,7 @@ describe('SignIn', () => {
   describe('SignInContainer', () => {
     it('calls onSubmit function with correct arguments when a valid form is submitted', async () => {
       const mockOnSubmit = jest.fn();
+      // eslint-disable-next-line no-unused-vars
       const { debug, getByTestId } = render(<SignInContainer onSubmit={mockOnSubmit} />);
 
       fireEvent.changeText(getByTestId('username'), 'Juhoh');

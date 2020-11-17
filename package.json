@@ -13,6 +13,8 @@
   "dependencies": {
     "@apollo/react-hooks": "^4.0.0",
     "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-community/hooks": "^2.6.0",
+    "@react-navigation/native": "^5.8.9",
     "apollo-boost": "^0.4.9",
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",

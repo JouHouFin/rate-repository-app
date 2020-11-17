@@ -38,7 +38,7 @@ const RepositoryList = () => {
   const { repositories, loading } = useRepositories();
   const history = useHistory();
   const handlePress = (item) => {
-    history.push(`/${item.id}`);
+    history.push(`/repository/${item.id}`);
   };
 
   return <RepositoryListContainer repositories={repositories} loading={loading} handlePress={handlePress} />;
