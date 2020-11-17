@@ -5,6 +5,7 @@ import { Route, Switch, Redirect } from 'react-router-native';
 import RepositoryList from './RepositoryList';
 import AppBar from './AppBar';
 import SignIn from './SignIn';
+import SignUp from './SignUp';
 import theme from '../theme';
 import SingleRepository from './SingleRepository';
 import CreateReview from './CreateReview';
@@ -35,6 +36,9 @@ const Main = () => {
         </Route>
         <Route path="/SignIn">
           <SignIn onSubmit={onSubmit} />
+        </Route>
+        <Route path="/SignUp">
+          <SignUp onSubmit={onSubmit} />
         </Route>
         <Route path="/createReview">
           <CreateReview />
