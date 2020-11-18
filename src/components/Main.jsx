@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Route, Switch, Redirect } from 'react-router-native';
 
@@ -25,14 +25,14 @@ const onSubmit = (values) => {
 
 
 const Main = () => {
-
+  const [order, setOrder] = useState({ mode: 'CREATED_AT', order: 'DESC' });
 
   return (
     <View style={styles.container}>
       <AppBar />
       <Switch>
         <Route path="/" exact>
-          <RepositoryList />
+          <RepositoryList order={order} setOrder={setOrder}/>
         </Route>
         <Route path="/SignIn">
           <SignIn onSubmit={onSubmit} />

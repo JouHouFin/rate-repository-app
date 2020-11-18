@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
@@ -50,8 +50,7 @@ export const RepositoryListContainer = ({ repositories, loading, handlePress, se
   );
 };
 
-const RepositoryList = () => {
-  const [order, setOrder] = useState({ mode: 'CREATED_AT', order: 'DESC' });
+const RepositoryList = ({ order, setOrder }) => {
   const { repositories, loading } = useRepositories(order);
 
   const history = useHistory();

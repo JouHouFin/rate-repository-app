@@ -97,7 +97,7 @@ const SingleRepository = () => {
   const history = useHistory();
 
   const onBackPress = () => {
-    history.push('/');
+    history.goBack();
     return true;
   };
 
