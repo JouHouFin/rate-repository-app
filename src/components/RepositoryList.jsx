@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import { useHistory } from 'react-router-dom';
 import RNPickerSelect from 'react-native-picker-select';
 import { Searchbar } from 'react-native-paper';
+import { useDebounce } from 'use-debounce';
 
 const styles = StyleSheet.create({
   separator: {
@@ -32,25 +33,15 @@ const Dropdown = ({ setOrder, order }) => {
   );
 };
 
-const FilterBar = () => {
-  const [searchQuery, setSearchQuery] = React.useState('');
-
-  const onChangeSearch = query => setSearchQuery(query);
-
-  return (
-    <Searchbar
-      placeholder="Search for a repository"
-      onChangeText={onChangeSearch}
-      value={searchQuery}
-      style={styles.searchBar}
-    />
-  );
-};
-
-const RepositoryListHeader = ({ setOrder, order }) => {
+const RepositoryListHeader = ({ setOrder, order, search, searchKeyWord }) => {
   return (
     <View>
-      <FilterBar style={styles.searchBar} />
+      <Searchbar
+        placeholder="Search for a repository"
+        onChangeText={query => search(query)}
+        style={styles.searchBar}
+        value={searchKeyWord}
+      />
       <Dropdown setOrder={setOrder} order={order} style={styles.searchBar}/>
     </View>
   );
@@ -62,9 +53,11 @@ export class RepositoryListContainer extends React.Component {
     const props = this.props;
     const order = props.order;
     const setOrder = props.setOrder;
+    const search = props.search;
+    const searchKeyWord = props.searchKeyWord;
 
     return (
-      <RepositoryListHeader order={order} setOrder={setOrder} />
+      <RepositoryListHeader order={order} setOrder={setOrder} search={search} searchKeyWord={searchKeyWord}/>
     );
   };
 
@@ -92,7 +85,10 @@ export class RepositoryListContainer extends React.Component {
 }
 
 const RepositoryList = ({ order, setOrder }) => {
-  const { repositories, loading } = useRepositories(order);
+  const [searchKeyWord, setSearchKeyWord] = useState('');
+  const [debouncedSearchKeyWord] = useDebounce(searchKeyWord, 500);
+
+  const { repositories, loading } = useRepositories(order, debouncedSearchKeyWord);
 
   const history = useHistory();
   const handlePress = (item) => {
@@ -100,7 +96,7 @@ const RepositoryList = ({ order, setOrder }) => {
   };
   if (loading) return <Text>Loading</Text>;
 
-  return <RepositoryListContainer repositories={repositories} handlePress={handlePress} setOrder={setOrder} order={order}/>;
+  return <RepositoryListContainer repositories={repositories} handlePress={handlePress} setOrder={setOrder} order={order} search={setSearchKeyWord} searchKeyWord={searchKeyWord}/>;
 
 };
 
