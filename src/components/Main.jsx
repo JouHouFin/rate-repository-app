@@ -22,10 +22,8 @@ const onSubmit = (values) => {
   console.log(values);
 };
 
-
-
 const Main = () => {
-  const [order, setOrder] = useState({ mode: 'CREATED_AT', order: 'DESC' });
+  const [order, setOrder] = useState('CREATED_AT:DESC');
 
   return (
     <View style={styles.container}>

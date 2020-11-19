@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import { useHistory } from 'react-router-dom';
@@ -20,29 +20,27 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const Dropdown = ({ setOrder, order }) => {
-  return (
-    <RNPickerSelect
-      onValueChange={(value) => value !== null ? setOrder(value) : setOrder(order)}
-      items={[
-        { label: 'Latest repositories', value: { mode: 'CREATED_AT', order: 'DESC' } },
-        { label: 'Highest rated repositories', value: { mode: 'RATING_AVERAGE', order: 'DESC' } },
-        { label: 'Lowest rated repositories', value: { mode: 'RATING_AVERAGE', order: 'ASC' } },
-      ]}
-    />
-  );
-};
+const RepositoryListHeader = ({ setOrder, order, setSearchKeyWord, searchKeyWord }) => {
+  const dropdownItems=[
+    { label: 'Latest repositories', value: 'CREATED_AT:DESC' },
+    { label: 'Highest rated repositories', value: 'RATING_AVERAGE:DESC' },
+    { label: 'Lowest rated repositories', value: 'RATING_AVERAGE:ASC' },
+  ];
 
-const RepositoryListHeader = ({ setOrder, order, search, searchKeyWord }) => {
   return (
     <View>
       <Searchbar
         placeholder="Search for a repository"
-        onChangeText={query => search(query)}
+        onChangeText={query => setSearchKeyWord(query)}
         style={styles.searchBar}
         value={searchKeyWord}
       />
-      <Dropdown setOrder={setOrder} order={order} style={styles.searchBar}/>
+      <RNPickerSelect
+        onValueChange={(value) => setOrder(value) }
+        items={dropdownItems}
+        placeholder={{}}
+        value={order}
+      />
     </View>
   );
 };
@@ -50,24 +48,24 @@ const RepositoryListHeader = ({ setOrder, order, search, searchKeyWord }) => {
 export class RepositoryListContainer extends React.Component {
   renderHeader = () => {
     // this.props contains the component's props
-    const props = this.props;
-    const order = props.order;
-    const setOrder = props.setOrder;
-    const search = props.search;
-    const searchKeyWord = props.searchKeyWord;
+    const { order, setOrder, setSearchKeyWord, searchKeyWord } = this.props;
 
     return (
-      <RepositoryListHeader order={order} setOrder={setOrder} search={search} searchKeyWord={searchKeyWord}/>
+      <RepositoryListHeader
+        order={order}
+        setOrder={setOrder}
+        setSearchKeyWord={setSearchKeyWord}
+        searchKeyWord={searchKeyWord}
+      />
     );
   };
 
   render() {
-    const props = this.props;
-    const repositories = props.repositories;
+    const { repositories, handlePress } = this.props;
+
     const repositoryNodes = repositories
       ? repositories.edges.map(edge => edge.node)
       : [];
-    const handlePress = props.handlePress;
 
     return (
       <FlatList
@@ -87,16 +85,23 @@ export class RepositoryListContainer extends React.Component {
 const RepositoryList = ({ order, setOrder }) => {
   const [searchKeyWord, setSearchKeyWord] = useState('');
   const [debouncedSearchKeyWord] = useDebounce(searchKeyWord, 500);
+  const [ orderBy, orderDirection ] = order.split(':');
 
-  const { repositories, loading } = useRepositories(order, debouncedSearchKeyWord);
+  const { repositories } = useRepositories(orderBy, orderDirection, debouncedSearchKeyWord);
 
   const history = useHistory();
   const handlePress = (item) => {
     history.push(`/repository/${item.id}`);
   };
-  if (loading) return <Text>Loading</Text>;
 
-  return <RepositoryListContainer repositories={repositories} handlePress={handlePress} setOrder={setOrder} order={order} search={setSearchKeyWord} searchKeyWord={searchKeyWord}/>;
+  return <RepositoryListContainer
+    repositories={repositories}
+    handlePress={handlePress}
+    setOrder={setOrder}
+    order={order}
+    setSearchKeyWord={setSearchKeyWord}
+    searchKeyWord={searchKeyWord}
+  />;
 
 };
 
