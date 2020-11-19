@@ -68,8 +68,9 @@ const SignInForm = ({ onSubmit }) => {
   );
 };
 
-const SignIn = () => {
+const SignIn = ({ setOrder }) => {
   const [signIn] = useSignIn();
+  setOrder('CREATED_AT:DESC');
 
   const onSubmit = async (values) => {
     const { username, password } = values;

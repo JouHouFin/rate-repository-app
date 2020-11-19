@@ -18,9 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const onSubmit = (values) => {
-  console.log(values);
-};
+
 
 const Main = () => {
   const [order, setOrder] = useState('CREATED_AT:DESC');
@@ -33,10 +31,10 @@ const Main = () => {
           <RepositoryList order={order} setOrder={setOrder}/>
         </Route>
         <Route path="/SignIn">
-          <SignIn onSubmit={onSubmit} />
+          <SignIn setOrder={setOrder} />
         </Route>
         <Route path="/SignUp">
-          <SignUp onSubmit={onSubmit} />
+          <SignUp setOrder={setOrder} />
         </Route>
         <Route path="/createReview">
           <CreateReview />

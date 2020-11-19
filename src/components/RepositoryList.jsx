@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const RepositoryListHeader = ({ setOrder, order, setSearchKeyWord, searchKeyWord }) => {
+const RepositoryListHeader = ({ setOrder, order, setSearchKeyword, searchKeyword }) => {
   const dropdownItems=[
     { label: 'Latest repositories', value: 'CREATED_AT:DESC' },
     { label: 'Highest rated repositories', value: 'RATING_AVERAGE:DESC' },
@@ -31,9 +31,9 @@ const RepositoryListHeader = ({ setOrder, order, setSearchKeyWord, searchKeyWord
     <View>
       <Searchbar
         placeholder="Search for a repository"
-        onChangeText={query => setSearchKeyWord(query)}
+        onChangeText={query => setSearchKeyword(query)}
         style={styles.searchBar}
-        value={searchKeyWord}
+        value={searchKeyword}
       />
       <RNPickerSelect
         onValueChange={(value) => setOrder(value) }
@@ -48,20 +48,20 @@ const RepositoryListHeader = ({ setOrder, order, setSearchKeyWord, searchKeyWord
 export class RepositoryListContainer extends React.Component {
   renderHeader = () => {
     // this.props contains the component's props
-    const { order, setOrder, setSearchKeyWord, searchKeyWord } = this.props;
+    const { order, setOrder, setSearchKeyword, searchKeyword } = this.props;
 
     return (
       <RepositoryListHeader
         order={order}
         setOrder={setOrder}
-        setSearchKeyWord={setSearchKeyWord}
-        searchKeyWord={searchKeyWord}
+        setSearchKeyword={setSearchKeyword}
+        searchKeyWord={searchKeyword}
       />
     );
   };
 
   render() {
-    const { repositories, handlePress } = this.props;
+    const { repositories, handlePress, onEndReach } = this.props;
 
     const repositoryNodes = repositories
       ? repositories.edges.map(edge => edge.node)
@@ -77,17 +77,28 @@ export class RepositoryListContainer extends React.Component {
             <RepositoryItem item={item} viewSingle={false}/>
           </TouchableOpacity>
         )}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     );
   }
 }
 
 const RepositoryList = ({ order, setOrder }) => {
-  const [searchKeyWord, setSearchKeyWord] = useState('');
-  const [debouncedSearchKeyWord] = useDebounce(searchKeyWord, 500);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
   const [ orderBy, orderDirection ] = order.split(':');
 
-  const { repositories } = useRepositories(orderBy, orderDirection, debouncedSearchKeyWord);
+  const { repositories, fetchMore } = useRepositories({
+    first: 6,
+    orderBy,
+    orderDirection,
+    searchKeyword: debouncedSearchKeyword
+  });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   const history = useHistory();
   const handlePress = (item) => {
@@ -99,8 +110,9 @@ const RepositoryList = ({ order, setOrder }) => {
     handlePress={handlePress}
     setOrder={setOrder}
     order={order}
-    setSearchKeyWord={setSearchKeyWord}
-    searchKeyWord={searchKeyWord}
+    setSearchKeyword={setSearchKeyword}
+    searchKeyWord={searchKeyword}
+    onEndReach={onEndReach}
   />;
 
 };
