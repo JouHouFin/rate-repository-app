@@ -90,7 +90,7 @@ const RepositoryList = ({ order, setOrder }) => {
   const [ orderBy, orderDirection ] = order.split(':');
 
   const { repositories, fetchMore } = useRepositories({
-    first: 6,
+    first: 8,
     orderBy,
     orderDirection,
     searchKeyword: debouncedSearchKeyword

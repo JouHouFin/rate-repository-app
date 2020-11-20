@@ -22,11 +22,11 @@ export const GET_REPOSITORIES = gql`
 `;
 
 export const GET_SINGLE_REPOSITORY = gql`
-  query ($id: ID!) {
+  query ($first: Int, $after: String, $id: ID!) {
     repository(id: $id) {
-      ...RepoFields
+          ...RepoFields
       url
-      reviews {
+      reviews (first: $first, after: $after){
         edges {
           node {
             id
@@ -38,11 +38,17 @@ export const GET_SINGLE_REPOSITORY = gql`
               username
             }
           }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          totalCount
+          hasNextPage
         }
       }
     }
-  }
-  ${REPO_FRAGMENT}
+  }${REPO_FRAGMENT}
 `;
 
 

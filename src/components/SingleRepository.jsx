@@ -72,11 +72,14 @@ const ReviewItem = ({ review }) => {
     </View>
   );
 };
-const SingleRepositoryContainer = ({ repository, loading }) => {
-  if (loading) return <Text>Loading</Text>;
+const SingleRepositoryContainer = ({ repository, onEndReach }) => {
 
-  const reviews = repository.reviews
-    ? repository.reviews.edges.map(edge => edge.node)
+  const repo = repository
+    ? repository
+    : {};
+
+  const reviews = repository
+    ? repo.reviews.edges.map(edge => edge.node)
     : [];
 
   return (
@@ -84,26 +87,31 @@ const SingleRepositoryContainer = ({ repository, loading }) => {
       data={reviews}
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+      ListHeaderComponent={() => <RepositoryInfo repository={repo} />}
       ItemSeparatorComponent={ItemSeparator}
       stickyHeaderIndices={[0]}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };
 
 const SingleRepository = () => {
   const { id } = useParams();
-  const { repository, loading } = useRepository(id);
+  const { repository, fetchMore } = useRepository({ id, first: 8 });
   const history = useHistory();
 
   const onBackPress = () => {
     history.goBack();
     return true;
   };
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   useBackHandler(onBackPress);
 
-  return <SingleRepositoryContainer repository={repository} loading={loading}/>;
+  return <SingleRepositoryContainer repository={repository} onEndReach={onEndReach} />;
 };
 
 export default SingleRepository;
