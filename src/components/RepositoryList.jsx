@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { FlatList, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import { useHistory } from 'react-router-dom';
@@ -96,6 +96,7 @@ const RepositoryList = ({ order, setOrder }) => {
     searchKeyword: debouncedSearchKeyword
   });
 
+
   const onEndReach = () => {
     fetchMore();
   };
@@ -104,6 +105,8 @@ const RepositoryList = ({ order, setOrder }) => {
   const handlePress = (item) => {
     history.push(`/repository/${item.id}`);
   };
+
+  if (!repositories) return <Text>Loading</Text>;
 
   return <RepositoryListContainer
     repositories={repositories}

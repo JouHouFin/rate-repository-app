@@ -74,12 +74,8 @@ const ReviewItem = ({ review }) => {
 };
 const SingleRepositoryContainer = ({ repository, onEndReach }) => {
 
-  const repo = repository
-    ? repository
-    : {};
-
   const reviews = repository
-    ? repo.reviews.edges.map(edge => edge.node)
+    ? repository.reviews.edges.map(edge => edge.node)
     : [];
 
   return (
@@ -87,7 +83,7 @@ const SingleRepositoryContainer = ({ repository, onEndReach }) => {
       data={reviews}
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => <RepositoryInfo repository={repo} />}
+      ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
       ItemSeparatorComponent={ItemSeparator}
       stickyHeaderIndices={[0]}
       onEndReached={onEndReach}
@@ -110,6 +106,8 @@ const SingleRepository = () => {
   };
 
   useBackHandler(onBackPress);
+
+  if (!repository) return <Text>Loading</Text>;
 
   return <SingleRepositoryContainer repository={repository} onEndReach={onEndReach} />;
 };
