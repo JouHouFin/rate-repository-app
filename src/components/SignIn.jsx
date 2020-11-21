@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
-import Text from './Text';
-import FormikTextInput from './FormikTextInput';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import useSignIn from '../hooks/useSignIn';
 
+import useSignIn from '../hooks/useSignIn';
+import Text from './Text';
+import FormikTextInput from './FormikTextInput';
 const initialValues = { username: '', password: '' };
 
 import theme from '../theme';
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
 const SignInForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.heading} fontWeight="bold">Sign in</Text>
       <FormikTextInput name="username" testID="username" placeholder="Username" style={styles.input}/>
       <FormikTextInput
         name="password"

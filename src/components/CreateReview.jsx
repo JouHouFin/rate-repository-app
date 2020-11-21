@@ -52,6 +52,11 @@ const styles = StyleSheet.create({
   },
   invalid: {
     color: theme.colors.error
+  },
+  heading: {
+    fontSize: theme.fontSizes.heading,
+    textAlign: 'center',
+    padding: 15,
   }
 });
 
@@ -88,9 +93,12 @@ const CreateReview = () => {
 
 export const CreateReviewContainer = ({ onSubmit }) => {
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-      {({ handleSubmit }) => <CreateReviewForm onSubmit={handleSubmit}/>}
-    </Formik>
+    <View>
+      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+        {({ handleSubmit }) => <CreateReviewForm onSubmit={handleSubmit}/>}
+      </Formik>
+    </View>
+
   );
 };
 

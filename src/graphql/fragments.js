@@ -15,5 +15,4 @@ export const REPO_FRAGMENT = gql`
     language
     ownerAvatarUrl
   }
-`
-;
+`;

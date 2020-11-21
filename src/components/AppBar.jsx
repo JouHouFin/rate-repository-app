@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 import { useQuery } from '@apollo/react-hooks';
+import { useLocation } from 'react-router-dom';
 
 import Text from './Text';
 import theme from '../theme';
@@ -30,17 +31,24 @@ const styles = StyleSheet.create({
   }
 });
 
-const AppBarTab = ({ text, linkTo, onPr }) => {
+const AppBarTab = ({ loc, text, linkTo, onPr }) => {
+  let style = styles.title;
+
+  if (loc === linkTo) {
+    style = [styles.title, { textDecorationLine: 'underline', fontWeight: 'bold' }];
+  }
+
   return (
     <View style={styles.tab}>
       <Link to={linkTo} component={TouchableOpacity} activeOpacity={0.5} onPress={onPr}>
-        <Text style={styles.title}>{text}</Text>
+        <Text style={style}>{text}</Text>
       </Link>
     </View>
   );
 };
 
 const AppBar = () => {
+  let location = useLocation();
 
   const authStorage = useContext(AuthStorageContext);
   const apolloClient = useApolloClient();
@@ -71,16 +79,18 @@ const AppBar = () => {
   return (
     <View style={styles.container}>
       <ScrollView horizontal style={styles.scroll}>
-        <AppBarTab text='Repositories' linkTo='/'/>
+        <AppBarTab loc={location.pathname} text='Repositories' linkTo='/'/>
         {authorizedUser ?
-          <AppBarTab text='Create a review' linkTo='/createReview'/>
+          <>
+            <AppBarTab loc={location.pathname} text='Create a review' linkTo='/CreateReview' />
+            <AppBarTab loc={location.pathname} text='My reviews' linkTo='/MyReviews'/>
+            <AppBarTab text='Sign out' linkTo='/' onPr={signOut}/>
+          </>
           :
-          <AppBarTab text='Sign in' linkTo='/SignIn'/>
-        }
-        {authorizedUser ?
-          <AppBarTab text='Sign out' linkTo='/' onPr={signOut}/>
-          :
-          <AppBarTab text='Sign up' linkTo='/SignUp'/>
+          <>
+            <AppBarTab loc={location.pathname} text='Sign in' linkTo='/SignIn'/>
+            <AppBarTab loc={location.pathname} text='Sign up' linkTo='/SignUp'/>
+          </>
         }
       </ScrollView>
     </View>

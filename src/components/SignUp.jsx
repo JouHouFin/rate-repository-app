@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
-import Text from './Text';
-import FormikTextInput from './FormikTextInput';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+
 import useSignUp from '../hooks/useSignUp';
+import Text from './Text';
+import FormikTextInput from './FormikTextInput';
 import useSignIn from '../hooks/useSignIn';
 
 const initialValues = { username: '', password: '' };
@@ -64,7 +65,6 @@ const styles = StyleSheet.create({
 const SignUpForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.heading} fontWeight="bold">Create an account</Text>
       <FormikTextInput name="username" testID="username" placeholder="Username" style={styles.input}/>
       <FormikTextInput name="password" testID="password" placeholder="Password" style={styles.input} secureTextEntry/>
       <FormikTextInput name="passwordConfirmation" testID="passwordConfirmation" placeholder="Confirm your password" style={styles.input} secureTextEntry/>

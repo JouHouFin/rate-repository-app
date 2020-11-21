@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { FlatList, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import RepositoryItem from './RepositoryItem';
-import useRepositories from '../hooks/useRepositories';
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import RNPickerSelect from 'react-native-picker-select';
 import { Searchbar } from 'react-native-paper';
 import { useDebounce } from 'use-debounce';
+
+import Text from './Text';
+import RepositoryItem from './RepositoryItem';
+import useRepositories from '../hooks/useRepositories';
 
 const styles = StyleSheet.create({
   separator: {

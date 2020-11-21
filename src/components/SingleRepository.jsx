@@ -1,13 +1,13 @@
 import React from 'react';
-import RepositoryItem from './RepositoryItem';
 import { useParams } from 'react-router-native';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { format, parseISO } from 'date-fns';
 import { useHistory } from 'react-router-dom';
 import { useBackHandler } from '@react-native-community/hooks';
 
+import RepositoryItem from './RepositoryItem';
 import Text from './Text';
 import useRepository from '../hooks/useRepository';
+import { ReviewItem } from './ReviewItem';
 import theme from '../theme';
 
 const styles = StyleSheet.create({
@@ -56,22 +56,6 @@ const RepositoryInfo = ({ repository }) => {
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const ReviewItem = ({ review }) => {
-  return (
-    <View style={styles.mainReviewContainer}>
-      <View style={styles.reviewDetailsContainer}>
-        <Text style={styles.points} fontWeight="bold">{review.rating}</Text>
-        <Text style={styles.usernameAndDate}>
-          <Text fontWeight="bold">{review.user.username}{'\n'}</Text>
-          <Text style={{ color: 'grey' }}>{format(parseISO(review.createdAt), 'dd.MM.yyyy')}</Text>
-        </Text>
-      </View>
-      <View style={styles.reviewTextContainer}>
-        <Text>{review.text}</Text>
-      </View>
-    </View>
-  );
-};
 const SingleRepositoryContainer = ({ repository, onEndReach }) => {
 
   const reviews = repository

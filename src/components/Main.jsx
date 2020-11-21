@@ -9,6 +9,7 @@ import SignUp from './SignUp';
 import theme from '../theme';
 import SingleRepository from './SingleRepository';
 import CreateReview from './CreateReview';
+import { MyReviews } from './MyReviews';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +37,10 @@ const Main = () => {
         <Route path="/SignUp">
           <SignUp setOrder={setOrder} />
         </Route>
-        <Route path="/createReview">
+        <Route path="/MyReviews">
+          <MyReviews />
+        </Route>
+        <Route path="/CreateReview">
           <CreateReview />
         </Route>
         <Route path="/repository/:id">
